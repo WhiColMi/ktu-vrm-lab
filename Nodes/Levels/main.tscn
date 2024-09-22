@@ -1,0 +1,190 @@
+[gd_scene load_steps=8 format=3 uid="uid://1ss6vrwe7fqk"]
+
+[ext_resource type="PackedScene" uid="uid://v1b207tjtxd7" path="res://Nodes/Props/PlankFloor.tscn" id="1_dp2i7"]
+[ext_resource type="Texture2D" uid="uid://dtjiixionvm3u" path="res://Graphics/Textures/noiseTexture.png" id="1_ndwl0"]
+[ext_resource type="Texture2D" uid="uid://cpftchpptesj7" path="res://Graphics/Textures/tilingvoronoi.png" id="2_s7x6b"]
+
+[sub_resource type="Shader" id="Shader_2gbhu"]
+code = "
+// NOTE: Shader automatically converted from Godot Engine 4.3.stable.mono's ProceduralSkyMaterial.
+
+shader_type sky;
+render_mode use_debanding;
+
+uniform vec4 sky_top_color : source_color = vec4(0.385, 0.454, 0.55, 1.0);
+uniform vec4 sky_horizon_color : source_color = vec4(0.646, 0.656, 0.67, 1.0);
+uniform float sky_curve : hint_range(0, 1) = 0.15;
+uniform float sky_energy = 1.0; // In Lux.
+uniform sampler2D sky_cover : filter_linear, source_color, hint_default_black;
+uniform vec4 sky_cover_modulate : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform vec4 ground_bottom_color : source_color = vec4(0.2, 0.169, 0.133, 1.0);
+uniform vec4 ground_horizon_color : source_color = vec4(0.646, 0.656, 0.67, 1.0);
+uniform float ground_curve : hint_range(0, 1) = 0.02;
+uniform float ground_energy = 1.0;
+uniform float sun_angle_max = 30.0;
+uniform float sun_curve : hint_range(0, 1) = 0.15;
+uniform float exposure : hint_range(0, 128) = 1.0;
+
+uniform sampler2D voronoi_texture;
+uniform sampler2D perlin_texture;
+
+uniform float perlin_min;
+uniform float perlin_max;
+uniform float perlin_cutout;
+
+vec3 calculate_sky_from_light(vec3 sky, vec3 eye_dir, vec3 light_dir, float light_size, float light_energy, vec3 light_color) {
+	float sun_angle = acos(dot(light_dir, eye_dir));
+	if (sun_angle < light_size) {
+		return light_color * light_energy * 15.;
+	} else if (sun_angle < sun_angle_max) {
+		float c2 = (sun_angle - light_size) / (sun_angle_max - light_size);
+		return mix(light_color * light_energy * 15., sky, clamp(1.0 - pow(1.0 - c2, 1.0 / sun_curve), 0.0, 1.0));
+	}
+	return sky;
+}
+
+void sky() {
+	float v_angle = acos(clamp(EYEDIR.y, -1.0, 1.0));
+	float c = (1.0 - v_angle / (PI * 0.5));
+	float sky_gradient = clamp(1.0 - pow(1.0 - c, 1.0 / sky_curve), 0.0, 1.0);
+	vec3 sky = mix(sky_horizon_color.rgb, sky_top_color.rgb, sky_gradient);
+	sky *= sky_energy;
+
+	if (LIGHT0_ENABLED) {
+		sky = calculate_sky_from_light(sky, EYEDIR, LIGHT0_DIRECTION, LIGHT0_SIZE, LIGHT0_ENERGY, LIGHT0_COLOR);
+	}
+
+	if (LIGHT1_ENABLED) {
+		sky = calculate_sky_from_light(sky, EYEDIR, LIGHT1_DIRECTION, LIGHT1_SIZE, LIGHT1_ENERGY, LIGHT1_COLOR);
+	}
+
+	if (LIGHT2_ENABLED) {
+		sky = calculate_sky_from_light(sky, EYEDIR, LIGHT2_DIRECTION, LIGHT2_SIZE, LIGHT2_ENERGY, LIGHT2_COLOR);
+	}
+
+	if (LIGHT3_ENABLED) {
+		sky = calculate_sky_from_light(sky, EYEDIR, LIGHT3_DIRECTION, LIGHT3_SIZE, LIGHT3_ENERGY, LIGHT3_COLOR);
+	}
+
+	vec4 sky_cover_texture = texture(sky_cover, SKY_COORDS);
+	sky += (sky_cover_texture.rgb * sky_cover_modulate.rgb) * sky_cover_texture.a * sky_cover_modulate.a * sky_energy;
+
+	c = (v_angle - (PI * 0.5)) / (PI * 0.5);
+	vec3 ground = mix(ground_horizon_color.rgb, ground_bottom_color.rgb, clamp(1.0 - pow(1.0 - c, 1.0 / ground_curve), 0.0, 1.0));
+	ground *= ground_energy;
+
+	
+	float perlin_range = perlin_max - perlin_min;
+	float perlin = perlin_min + clamp(texture(perlin_texture, SKY_COORDS*vec2(2)).x - perlin_cutout, 0, 1) * perlin_range;
+	COLOR = mix(
+		ground,
+		sky + clamp(mix(
+			vec3(0),
+			smoothstep(
+				.35,
+				.36,
+				clamp(texture(voronoi_texture, SKY_COORDS*vec2(15)).xyz, 0, 1)
+			) * perlin + clamp(pow(((texture(perlin_texture, SKY_COORDS).x) + .5f) * .62, 12), 0, 1) * vec3(.6, .3, .9),
+			sky_gradient-.6
+		), 0, 1),
+		step(0.0, EYEDIR.y)
+	) * exposure;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ipld8"]
+shader = SubResource("Shader_2gbhu")
+shader_parameter/sky_top_color = Color(0.0155834, 0.0394169, 0.0679986, 1)
+shader_parameter/sky_horizon_color = Color(0.0849764, 0.0471689, 0.0416048, 1)
+shader_parameter/sky_curve = 0.096
+shader_parameter/sky_energy = 1.0
+shader_parameter/sky_cover_modulate = Color(1, 1, 1, 1)
+shader_parameter/ground_bottom_color = Color(0, 0, 0, 1)
+shader_parameter/ground_horizon_color = Color(0.102597, 0.049701, 0.0281515, 1)
+shader_parameter/ground_curve = 0.02
+shader_parameter/ground_energy = 1.0
+shader_parameter/sun_angle_max = 0.0734784
+shader_parameter/sun_curve = 5.70815
+shader_parameter/exposure = 3.7
+shader_parameter/perlin_min = 0.0
+shader_parameter/perlin_max = 1.0
+shader_parameter/perlin_cutout = 0.465
+shader_parameter/voronoi_texture = ExtResource("2_s7x6b")
+shader_parameter/perlin_texture = ExtResource("1_ndwl0")
+
+[sub_resource type="Sky" id="Sky_f737e"]
+sky_material = SubResource("ShaderMaterial_ipld8")
+
+[sub_resource type="Environment" id="Environment_3w1yn"]
+background_mode = 2
+sky = SubResource("Sky_f737e")
+tonemap_mode = 3
+tonemap_exposure = 2.0
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.018
+
+[node name="Main" type="Node3D"]
+
+[node name="Config" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Config"]
+environment = SubResource("Environment_3w1yn")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Config"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, -0.326406, 0.868369, 0.373355, -0.37876, 0.241733, -0.893367, 0, 0, 0)
+light_color = Color(0.73, 0.901, 1, 1)
+light_energy = 0.05
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="Config"]
+transform = Transform3D(1, 0, 0, 0, 0.991945, 0.126666, 0, -0.126666, 0.991945, 0, 3.66136, 11.9677)
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Floor" type="Node" parent="Environment"]
+
+[node name="Node3D" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152148, 0, -0.305392)
+
+[node name="Node3D7" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80017, 0, -0.305392)
+
+[node name="Node3D8" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80017, 0, -6.45299)
+
+[node name="Node3D9" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80017, 0, 5.83676)
+
+[node name="Node3D5" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152148, 0, -6.3819)
+
+[node name="Node3D6" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.07421, 0, -6.40284)
+
+[node name="Node3D3" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.10774, 0, -0.305392)
+
+[node name="Node3D4" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.10774, 0, 5.83894)
+
+[node name="Node3D2" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152148, 0, 5.86603)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.45229, 1.4, 4.75087)
+light_color = Color(1, 0.727833, 0.29, 1)
+light_energy = 0.3
+omni_range = 7.647
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.07521, 1.4, 6.71207)
+light_color = Color(1, 0.727833, 0.29, 1)
+light_energy = 0.3
+omni_range = 7.647
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25328, 1.4, 5.93028)
+light_color = Color(1, 0.727833, 0.29, 1)
+light_energy = 0.3
+omni_range = 7.647

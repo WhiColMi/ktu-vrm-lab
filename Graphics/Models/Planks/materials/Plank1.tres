@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://bc2poain2vt5t"]
+
+[ext_resource type="Texture2D" uid="uid://dxmrsngitr8qq" path="res://Graphics/Models/Planks/textures/Plank1_Albedo.png" id="1_1sova"]
+[ext_resource type="Texture2D" uid="uid://dfnfxmxp1y46t" path="res://Graphics/Models/Planks/textures/Plank1_Normal.png" id="2_34w03"]
+[ext_resource type="Texture2D" uid="uid://tqdhf5li54pq" path="res://Graphics/Models/Planks/textures/Plank1_Height.png" id="2_aguuk"]
+[ext_resource type="Texture2D" uid="uid://c8chokaaarmkw" path="res://Graphics/Models/Planks/textures/Plank1_Roughness.png" id="3_y8baa"]
+
+[resource]
+albedo_texture = ExtResource("1_1sova")
+albedo_texture_force_srgb = true
+roughness_texture = ExtResource("3_y8baa")
+normal_enabled = true
+normal_texture = ExtResource("2_34w03")
+heightmap_enabled = true
+heightmap_scale = 2.0
+heightmap_deep_parallax = true
+heightmap_min_layers = 2
+heightmap_max_layers = 12
+heightmap_texture = ExtResource("2_aguuk")

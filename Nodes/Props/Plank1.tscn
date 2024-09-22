@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b557sscaewnph"]
+
+[ext_resource type="ArrayMesh" uid="uid://5xetqbt2yxdy" path="res://Graphics/Models/Planks/Plank1.obj" id="1_11niq"]
+[ext_resource type="Material" uid="uid://bc2poain2vt5t" path="res://Graphics/Models/Planks/materials/Plank1.tres" id="2_f7ur0"]
+
+[node name="Plank1" type="Node3D"]
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_11niq")
+surface_material_override/0 = ExtResource("2_f7ur0")
