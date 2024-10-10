@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdo86tjkrr0vy"]
+
+[ext_resource type="ArrayMesh" uid="uid://yfcv5fsnyns2" path="res://Graphics/Models/Planks/Plank2.obj" id="1_6yqk3"]
+[ext_resource type="Material" uid="uid://cp8sw7fb4i5ym" path="res://Graphics/Models/Planks/materials/Plank2.tres" id="2_hy8vx"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ts0ax"]
+points = PackedVector3Array(0.200076, -0.161652, 0.876255, 0.409496, 0.0960931, 0.959894, 0.0025898, 0.134477, 0.580256, 0.430434, 0.134477, -1.03187, -0.457952, -0.128723, -1.03187, -0.412957, 0.0981498, 1.01013, -0.457952, 0.101519, -1.06485, 0.298776, -0.128723, -1.03187, -0.392123, -0.128723, 1.00797, 0.397389, -0.161652, 1.00797, 0.430434, -0.128723, 0.185314, -0.326294, 0.134477, 0.44854, -0.161765, 0.134477, -1.06485, 0.397078, -0.0896474, -0.955282, 0.10129, 0.101519, 1.04095, -0.293423, 0.134477, 0.777726, 0.134161, -0.161652, 1.00797, 0.397389, -0.161652, 0.744746, -0.457952, -0.128723, -0.867381, 0.430434, 0.134477, -0.834194, 0.0025898, 0.134477, -1.06485, -0.194723, 0.134477, -1.03187, 0.430434, -0.128723, 0.251275, -0.227594, 0.134477, 0.777726, 0.298776, -0.161652, 0.777726, 0.134161, -0.161652, 0.974991)
+
+[node name="Plank2" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_ts0ax")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_6yqk3")
+surface_material_override/0 = ExtResource("2_hy8vx")

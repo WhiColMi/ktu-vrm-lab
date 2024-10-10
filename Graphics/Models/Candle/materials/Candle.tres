@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cmikubeq33hv0"]
+
+[ext_resource type="Texture2D" uid="uid://c1so0oc8ktsti" path="res://Graphics/Models/Candle/textures/Candle_Albedo.png" id="1_lcclf"]
+[ext_resource type="Texture2D" uid="uid://c2j23epyl16n8" path="res://Graphics/Models/Candle/textures/Candle_Roughness.png" id="2_y4n6v"]
+
+[resource]
+albedo_texture = ExtResource("1_lcclf")
+roughness_texture = ExtResource("2_y4n6v")

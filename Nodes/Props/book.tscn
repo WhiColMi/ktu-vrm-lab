@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://do2tpj83sb5b6"]
+
+[ext_resource type="Material" uid="uid://di1mq7kj4x64p" path="res://Graphics/Models/Book/materials/book.tres" id="1_vgpsn"]
+[ext_resource type="ArrayMesh" uid="uid://dhqqmud80fmok" path="res://Graphics/Models/Book/Book.obj" id="2_udf5f"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_02jcy"]
+points = PackedVector3Array(-0.0842, -0.370441, -0.276843, 0.0672264, 0.36419, 0.294625, 0.095646, 0.396902, 0.285846, 0.0956278, -0.396902, 0.285846, 0.095646, 0.396902, -0.297042, -0.0842, 0.370441, 0.278791, 0.0956278, -0.396902, -0.297102, -0.0842, -0.370441, 0.278791, -0.0842, 0.370441, -0.276843, -0.0625161, -0.3672, 0.297005, -0.0625161, 0.3672, 0.297005, 0.0672264, -0.36419, 0.294625)
+
+[node name="Book" type="RigidBody3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+material_override = ExtResource("1_vgpsn")
+mesh = ExtResource("2_udf5f")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_02jcy")

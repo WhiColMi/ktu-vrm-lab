@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://di1mq7kj4x64p"]
+
+[ext_resource type="Texture2D" uid="uid://o4glm0ovji6p" path="res://Graphics/Models/Book/textures/Book_Albedo.png" id="1_j67bc"]
+[ext_resource type="Texture2D" uid="uid://6lo0r47wpvvl" path="res://Graphics/Models/Book/textures/Book_Height.png" id="2_sahio"]
+[ext_resource type="Texture2D" uid="uid://cr1j42151ktja" path="res://Graphics/Models/Book/textures/Book_Normal.png" id="3_liuvo"]
+[ext_resource type="Texture2D" uid="uid://dtkwyf7jfctvp" path="res://Graphics/Models/Book/textures/Book_Roughness.png" id="4_4h03g"]
+
+[resource]
+albedo_texture = ExtResource("1_j67bc")
+roughness_texture = ExtResource("4_4h03g")
+normal_enabled = true
+normal_texture = ExtResource("3_liuvo")
+heightmap_enabled = true
+heightmap_scale = 0.5
+heightmap_deep_parallax = true
+heightmap_min_layers = 2
+heightmap_max_layers = 6
+heightmap_texture = ExtResource("2_sahio")

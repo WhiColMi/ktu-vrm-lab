@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://biwcjtqln5q08"]
+
+[ext_resource type="Material" uid="uid://cg1w4u31m3jvh" path="res://Graphics/Models/Spiderweb/materials/Spiderweb.tres" id="1_602si"]
+[ext_resource type="ArrayMesh" uid="uid://dru4wux5yy4p6" path="res://Graphics/Models/Spiderweb/SpiderWeb.obj" id="2_uoywd"]
+
+[node name="SpiderWeb" type="MeshInstance3D"]
+material_override = ExtResource("1_602si")
+mesh = ExtResource("2_uoywd")
