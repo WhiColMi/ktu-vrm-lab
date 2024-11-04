@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://v1b207tjtxd7"]
 
-[ext_resource type="PackedScene" uid="uid://b557sscaewnph" path="res://Nodes/Props/plank_1.tscn" id="1_ssybo"]
-[ext_resource type="PackedScene" uid="uid://cdo86tjkrr0vy" path="res://Nodes/Props/plank_2.tscn" id="2_bh34d"]
-[ext_resource type="PackedScene" uid="uid://dc77wsyfslltj" path="res://Nodes/Props/plank_3.tscn" id="3_fhqah"]
+[ext_resource type="PackedScene" uid="uid://b557sscaewnph" path="res://Nodes/Probs/plank_1.tscn" id="1_ssybo"]
+[ext_resource type="PackedScene" uid="uid://cdo86tjkrr0vy" path="res://Nodes/Probs/plank_2.tscn" id="2_bh34d"]
+[ext_resource type="PackedScene" uid="uid://dc77wsyfslltj" path="res://Nodes/Probs/plank_3.tscn" id="3_fhqah"]
 
 [node name="PlankFloor" type="Node3D"]
 

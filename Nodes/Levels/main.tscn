@@ -1,10 +1,19 @@
-[gd_scene load_steps=12 format=3 uid="uid://1ss6vrwe7fqk"]
+[gd_scene load_steps=20 format=3 uid="uid://1ss6vrwe7fqk"]
 
-[ext_resource type="PackedScene" uid="uid://v1b207tjtxd7" path="res://Nodes/Props/plank_floor.tscn" id="1_dp2i7"]
+[ext_resource type="PackedScene" uid="uid://v1b207tjtxd7" path="res://Nodes/Probs/plank_floor.tscn" id="1_dp2i7"]
 [ext_resource type="Texture2D" uid="uid://dtjiixionvm3u" path="res://Graphics/Textures/noiseTexture.png" id="1_ndwl0"]
 [ext_resource type="Texture2D" uid="uid://cpftchpptesj7" path="res://Graphics/Textures/tilingvoronoi.png" id="2_s7x6b"]
-[ext_resource type="PackedScene" uid="uid://ds8i0tw3it73m" path="res://Nodes/Props/candle.tscn" id="4_04vmm"]
-[ext_resource type="PackedScene" uid="uid://biwcjtqln5q08" path="res://Nodes/Props/spider_web.tscn" id="5_2pygc"]
+[ext_resource type="PackedScene" uid="uid://ds8i0tw3it73m" path="res://Nodes/Probs/candle.tscn" id="4_04vmm"]
+[ext_resource type="PackedScene" uid="uid://biwcjtqln5q08" path="res://Nodes/Probs/spider_web.tscn" id="5_2pygc"]
+[ext_resource type="PackedScene" uid="uid://hbta6j8yvriw" path="res://Nodes/Probs/table.tscn" id="6_8lxur"]
+[ext_resource type="PackedScene" uid="uid://do2tpj83sb5b6" path="res://Nodes/Probs/book.tscn" id="7_yndja"]
+[ext_resource type="Script" path="res://Scripts/Interaction/Holdable.cs" id="8_4d54r"]
+[ext_resource type="PackedScene" uid="uid://cd56jcy5y1qy" path="res://Nodes/Probs/bottle.tscn" id="8_ntrqp"]
+[ext_resource type="PackedScene" uid="uid://d3fgy483alyqy" path="res://Nodes/Probs/cauldron.tscn" id="9_2842f"]
+[ext_resource type="PackedScene" uid="uid://bt7qpwmvk5837" path="res://Nodes/Probs/chair.tscn" id="9_cm0k1"]
+[ext_resource type="Script" path="res://Scripts/CharacterController/CharacterController.cs" id="11_axi2o"]
+[ext_resource type="Script" path="res://Scripts/Interaction/Character/Interactor.cs" id="12_s2ghm"]
+[ext_resource type="Script" path="res://Scripts/Interaction/Character/Holder.cs" id="14_qfsdp"]
 
 [sub_resource type="Shader" id="Shader_2gbhu"]
 code = "
@@ -66,13 +75,13 @@ vec4 skyImageProj(vec3 viewVec, float _rotation, float _altitude, float _imageSi
     _altitude = fract(_altitude);
     vec3 _EYEDIR = rotation3dY(_rotation) * viewVec;
     //Since we applied the rotation directly to the viewVec we can just ingore it from now on.
- 
+
     //float rot_z = atan(_EYEDIR.y, _EYEDIR.x)/(2.0*PI)+0.5;
     float rot_x = atan(_EYEDIR.y, _EYEDIR.z)/(2.0*PI)+0.5;
     //float rot_y = atan(_EYEDIR.z, _EYEDIR.x)/(2.0*PI)+0.5;
- 
+
     vec4 result = projImage(_altitude, rot_x, _EYEDIR.x, _imageSize, _imageSampler);
- 
+
     //make sure the image isn't clipped when altitude approaches the max/min values
     if(_altitude > 0.75) {
   	  result = max(result, projImage(_altitude-1.0, rot_x, _EYEDIR.x, _imageSize, _imageSampler));
@@ -88,14 +97,14 @@ vec2 calculate_pitch_yaw(vec3 direction) {
 
     // Pitch is the altitude of the forward vector off the xy plane, toward the down direction.
     float pitch = asin(direction.y)/PI;
-	
+
 	return vec2(pitch, yaw);
 }
 
 vec3 calculate_light_disk(vec3 light_color, float light_energy, vec3 light_dir, vec3 eye_dir) {
 	vec2 pitch_yaw = calculate_pitch_yaw(-light_dir);
 	//return skyImageProj(eye_dir, -pitch_yaw.y, pitch_yaw.x, sun_angle_max, perlin_texture).xyz;
-	
+
 	return light_color * light_energy * 30.;
 }
 
@@ -151,7 +160,7 @@ void sky() {
 	vec3 ground = mix(ground_horizon_color.rgb, ground_bottom_color.rgb, clamp(1.0 - pow(1.0 - c, 1.0 / ground_curve), 0.0, 1.0));
 	ground *= ground_energy;
 
-	
+
 	float perlin_range = perlin_max - perlin_min;
 	float perlin = perlin_min + clamp(texture(perlin_texture, SKY_COORDS*vec2(2)).x - perlin_cutout, 0, 1) * perlin_range;
 	COLOR = mix(
@@ -204,9 +213,7 @@ glow_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.018
 
-[sub_resource type="SphereMesh" id="SphereMesh_igkbj"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_p0rhh"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mmnqs"]
 
 [node name="Main" type="Node3D"]
 
@@ -216,13 +223,10 @@ volumetric_fog_density = 0.018
 environment = SubResource("Environment_3w1yn")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Config"]
-transform = Transform3D(-0.878817, 0.0639327, -0.472856, 0, 0.990983, 0.133986, 0.477159, 0.117749, -0.870893, 0, 0, 0)
+transform = Transform3D(-0.878817, 0.181831, -0.441155, 0, 0.924546, 0.38107, 0.477159, 0.334891, -0.812507, 0, 0, 0)
 light_color = Color(0.73, 0.901, 1, 1)
 light_energy = 0.05
 shadow_enabled = true
-
-[node name="Camera3D" type="Camera3D" parent="Config"]
-transform = Transform3D(1, 0, 0, 0, 0.991945, 0.126666, 0, -0.126666, 0.991945, 0, 3.66136, 11.9677)
 
 [node name="Environment" type="Node" parent="."]
 
@@ -255,34 +259,83 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.10774, 0, 5.83894)
 [node name="Node3D2" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152148, 0, 5.86603)
 
-[node name="Light" type="Node" parent="Environment"]
+[node name="Props" type="Node" parent="Environment"]
 
-[node name="Candle" parent="Environment/Light" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.19845, 0.173521, -1.62441)
+[node name="Candles" type="Node" parent="Environment/Props"]
 
-[node name="Candle2" parent="Environment/Light" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.54011, 0.411573, 1.29932)
+[node name="Candle" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34507, 0.173521, 1.46642)
 
-[node name="Candle3" parent="Environment/Light" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33729, 0.227706, 3.81467)
+[node name="Candle7" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.92647, 2.83761, -4.66296)
 
-[node name="Candle4" parent="Environment/Light" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.48289, 0.173522, 0.331644)
+[node name="Candle9" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65412, 0.209437, -8.12784)
 
-[node name="Candle5" parent="Environment/Light" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.788067, 0.173522, 1.45709)
+[node name="Candle10" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.727998, 0.209437, -8.12784)
 
-[node name="Candle6" parent="Environment/Light" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.866857, 0.119582, 3.42913)
+[node name="Candle11" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.94547, 0.209436, -4.11562)
 
-[node name="SpiderWeb" parent="Environment/Light" instance=ExtResource("5_2pygc")]
-transform = Transform3D(-0.381921, 0.601672, -1.96918, -1.47316, 0.626072, 1.43028, 2.32272, 0.49601, 0.583345, -4.25346, 3.31653, -6.08165)
+[node name="Candle12" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.78582, 0.209437, 0.172731)
 
-[node name="PhysicalBall" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.31071, 0)
+[node name="Candle8" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.06132, 2.92538, -6.03098)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicalBall"]
-mesh = SubResource("SphereMesh_igkbj")
+[node name="Candle2" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.122412, 0.107726, 3.57616)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicalBall"]
-shape = SubResource("SphereShape3D_p0rhh")
+[node name="Candle3" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.938936, 0.227706, 6.05973)
+
+[node name="Candle4" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.67974, 0.173522, 2.909)
+
+[node name="Candle6" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.06371, 0.119582, 6.00648)
+
+[node name="Table" parent="Environment/Props" instance=ExtResource("6_8lxur")]
+transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 5.10417, 0.132775, -4.21439)
+
+[node name="SpiderWeb" parent="Environment/Props" instance=ExtResource("5_2pygc")]
+transform = Transform3D(-0.785643, 0.294034, -0.997926, 0.728402, -0.214916, -1.24447, -1.35185, -0.286682, -0.0905848, 5.76942, 1.14663, -0.39284)
+skeleton = NodePath("")
+
+[node name="SpiderWeb2" parent="Environment/Props" instance=ExtResource("5_2pygc")]
+transform = Transform3D(-1.33342, 0.216595, -1.22457, 2.16712, 0.07561, -1.11703, -0.530591, -0.235503, -1.48489, 6.09685, 5.42085, -7.44371)
+skeleton = NodePath("")
+
+[node name="Book" parent="Environment/Props" instance=ExtResource("7_yndja")]
+transform = Transform3D(4.2222e-08, 1, 1.13133e-08, 0.965926, -4.37114e-08, 0.258819, 0.258819, 0, -0.965926, 4.2829, 3.20502, -4.9195)
+script = ExtResource("8_4d54r")
+
+[node name="Bottle" parent="Environment/Props" instance=ExtResource("8_ntrqp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.99842, 2.8468, -3.10159)
+
+[node name="Cauldron" parent="Environment/Props" instance=ExtResource("9_2842f")]
+transform = Transform3D(1.00125, 0, 0, 0, 1.00125, 0, 0, 0, 1.00125, -2.45848, 0.145159, 4.20749)
+
+[node name="Chair" parent="Environment/Props" instance=ExtResource("9_cm0k1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0638, 0.148203, -4.40826)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("CameraOriginNode")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34003, 0)
+collision_layer = 2
+script = ExtResource("11_axi2o")
+CameraOriginNode = NodePath("Camera3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_mmnqs")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+script = ExtResource("12_s2ghm")
+
+[node name="Holder" type="Generic6DOFJoint3D" parent="CharacterBody3D/Camera3D"]
+node_a = NodePath("../Hand")
+script = ExtResource("14_qfsdp")
+
+[node name="Hand" type="StaticBody3D" parent="CharacterBody3D/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)

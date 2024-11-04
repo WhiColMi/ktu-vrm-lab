@@ -5,6 +5,5 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>ktuvrmlab</RootNamespace>
-    <!-- <AllowUnsafeBlocks>true</AllowUnsafeBlocks> -->
   </PropertyGroup>
 </Project>
