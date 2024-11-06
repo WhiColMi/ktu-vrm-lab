@@ -8,7 +8,7 @@ namespace Interactions
         [Export] public NodePath anchorNodePath;
 
         public Node3D Anchor { get; private set; }
-        public Holdable Holding { get; private set; }
+        public Holdable Holding { get; protected set; }
 
         public override void _Ready()
         {
@@ -16,7 +16,7 @@ namespace Interactions
             NodeA = Anchor.GetPath();
         }
 
-        public void Attach(Holdable holdable)
+        public virtual void Attach(Holdable holdable)
         {
             if (IsHolding())
             {
@@ -24,12 +24,12 @@ namespace Interactions
             }
 
             Holding = holdable;
-            NodeB = holdable.GetPath();
+            UpdateJointAttachment();
         }
 
-        public void Detach()
+        public virtual void Detach()
         {
-            if (Holding == null)
+            if (!IsHolding())
             {
                 return;
             }
@@ -37,9 +37,24 @@ namespace Interactions
             Holdable _holding = Holding;
 
             Holding = null;
-            NodeB = null;
-            
+            UpdateJointAttachment();
+
             _holding.Drop();
+        }
+
+        protected void UpdateJointAttachment()
+        {
+            if (Holding == null)
+            {
+                NodeB = null;
+            }
+            else
+            {
+                var originalTransform = Holding.Transform;
+                Holding.GlobalTransform = Anchor.GlobalTransform;
+                NodeB = Holding.GetPath();
+                Holding.Transform = originalTransform;
+            }
         }
 
 // === Getters ===

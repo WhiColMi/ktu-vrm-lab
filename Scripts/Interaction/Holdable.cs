@@ -15,24 +15,29 @@ namespace Interactions
 // === Custom methods ===
         public void PickUp(Holder holder)
         {
-            if (!IsHeld())
+            if (IsHeld())
             {
-                Holder = holder;
-                Holder.Attach(this);
-                onHoldStateChanged?.Invoke(IsHeld());
-                HoldStateChanged();
+                return;
             }
+
+            Holder = holder;
+            Holder.Attach(this);
+
+            HoldStateChanged();
         }
 
         public void Drop()
         {
-            if (IsHeld())
+            if (!IsHeld())
             {
-                Holder _holder = Holder;
-                Holder = null;
-                _holder.Detach();
-                HoldStateChanged();
+                return;
             }
+
+            Holder _holder = Holder;
+            Holder = null;
+            _holder.Detach();
+
+            HoldStateChanged();
         }
 
         void HoldStateChanged()
