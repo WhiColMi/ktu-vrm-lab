@@ -1,15 +1,16 @@
 using Godot;
 using Godot.Collections;
 
-namespace Interactions
+namespace Interactions.Character
 {
-    public partial class Interactor : Camera3D
+    public partial class InteractionManager : Camera3D
     {
         [Export]
         public float InteractionDistance = 5.0f;
 
-        Interactable inInteractionWith;
-        Holder Holder;
+        GraspManager grasp;
+        UseManager use;
+
         readonly Array<Rid> excludedInInteraction = new();
 
 // === Godot methods ===
@@ -26,23 +27,32 @@ namespace Interactions
                 GD.Print("Player collision object not found");
             }
 
-            Holder = GetNode<Holder>("./Holder");
-        }            
+            grasp = GetNode<GraspManager>("./Grasp");
+            use = GetNode<UseManager>("./Use");
+        }
 
         public override void _Process(double delta)
         {
-            if (Input.IsActionJustPressed("interact"))
+            if (Input.IsActionJustPressed("use"))
             {
-                InteractStart();
+                Node result = RayCast();
+                if (!use.UseStart(result))
+                {
+                    use.UseStart(grasp.Holding);
+                }
             }
-            if (Input.IsActionJustReleased("interact"))
+            if (Input.IsActionJustReleased("use"))
             {
-                InteractEnd();
+                use.UseEnd();
             }
 
-            if (Input.IsActionJustPressed("drop"))
+            if (Input.IsActionJustPressed("grasp"))
             {
-                Holder.Detach();
+                Node result = RayCast();
+                if (result == grasp.Holding || !grasp.GraspStart(result))
+                {
+                    grasp.GraspEnd();
+                }
             }
         }
 
@@ -50,7 +60,7 @@ namespace Interactions
 
 // === Custom methods ===
 
-        void InteractStart()
+        Node RayCast()
         {
             var from = GlobalTransform.Origin;
             var to = from - GlobalTransform.Basis.Column2 * InteractionDistance;
@@ -71,30 +81,18 @@ namespace Interactions
 
             if (result.Count > 0)
             {
-                if (result["collider"].Obj is Node collider && collider is Interactable interactable)
+                if (result["collider"].Obj is Node collider)
                 {
-                    interactable.InteractStart(this);
-                    inInteractionWith = interactable;
+                    return collider;
                 }
             }
             else
             {
                 GD.Print("No interaction target found");
             }
-        }
-    
-        void InteractEnd()
-        {
-            if (inInteractionWith != null)
-            {
-                inInteractionWith.InteractEnd(this);
-                inInteractionWith = null;
-            }
+
+            return null;
         }
 
-        public Holder GetHolder()
-        {
-            return Holder;
-        }
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://1ss6vrwe7fqk"]
+[gd_scene load_steps=21 format=3 uid="uid://1ss6vrwe7fqk"]
 
 [ext_resource type="PackedScene" uid="uid://v1b207tjtxd7" path="res://Nodes/Probs/plank_floor.tscn" id="1_dp2i7"]
 [ext_resource type="Texture2D" uid="uid://dtjiixionvm3u" path="res://Graphics/Textures/noiseTexture.png" id="1_ndwl0"]
@@ -12,8 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://d3fgy483alyqy" path="res://Nodes/Probs/cauldron.tscn" id="9_2842f"]
 [ext_resource type="PackedScene" uid="uid://bt7qpwmvk5837" path="res://Nodes/Probs/chair.tscn" id="9_cm0k1"]
 [ext_resource type="Script" path="res://Scripts/CharacterController/CharacterController.cs" id="11_axi2o"]
-[ext_resource type="Script" path="res://Scripts/Interaction/Character/Interactor.cs" id="12_s2ghm"]
-[ext_resource type="Script" path="res://Scripts/Interaction/Character/Holder.cs" id="14_qfsdp"]
+[ext_resource type="Script" path="res://Scripts/Interaction/Character/UseManager.cs" id="12_s2ghm"]
+[ext_resource type="Script" path="res://Scripts/Interaction/Character/InteractionManager.cs" id="13_v02xf"]
+[ext_resource type="Script" path="res://Scripts/Interaction/Character/GraspManager.cs" id="14_qs6i1"]
 
 [sub_resource type="Shader" id="Shader_2gbhu"]
 code = "
@@ -346,11 +347,14 @@ shape = SubResource("CapsuleShape3D_mmnqs")
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-script = ExtResource("12_s2ghm")
+script = ExtResource("13_v02xf")
 
-[node name="Holder" type="Generic6DOFJoint3D" parent="CharacterBody3D/Camera3D"]
-node_a = NodePath("../Hand")
-script = ExtResource("14_qfsdp")
+[node name="Grasp" type="Generic6DOFJoint3D" parent="CharacterBody3D/Camera3D"]
+script = ExtResource("14_qs6i1")
+anchorNodePath = NodePath("Hand")
 
-[node name="Hand" type="StaticBody3D" parent="CharacterBody3D/Camera3D"]
+[node name="Hand" type="StaticBody3D" parent="CharacterBody3D/Camera3D/Grasp"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="Use" type="Node" parent="CharacterBody3D/Camera3D"]
+script = ExtResource("12_s2ghm")

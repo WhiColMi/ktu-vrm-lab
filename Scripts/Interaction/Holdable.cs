@@ -1,16 +1,15 @@
 using Godot;
+using Common;
 
 namespace Interactions
 {
-    public partial class Holdable : Interactable
+    public partial class Holdable : RigidBody3D
     {
         Holder Holder;
         Node originalParent;
 
-        public override void InteractStart(Interactor interactor)
-        {
-            PickUp(interactor.GetHolder());
-        }
+        
+        public Delegates.BooleanDelegate onHoldStateChanged;
 
 
 // === Custom methods ===
@@ -20,6 +19,8 @@ namespace Interactions
             {
                 Holder = holder;
                 Holder.Attach(this);
+                onHoldStateChanged?.Invoke(IsHeld());
+                HoldStateChanged();
             }
         }
 
@@ -28,15 +29,19 @@ namespace Interactions
             if (IsHeld())
             {
                 Holder _holder = Holder;
-
                 Holder = null;
-                
                 _holder.Detach();
+                HoldStateChanged();
             }
         }
 
+        void HoldStateChanged()
+        {
+            onHoldStateChanged?.Invoke(IsHeld());
+        }
 
-// === Getters ===
+
+        // === Getters ===
         public bool IsHeld()
         {
             return Holder != null;

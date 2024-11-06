@@ -1,6 +1,7 @@
 using Godot;
 
-namespace Environment {
+namespace Interactions.Environment
+{
     public partial class Flammable : CollisionDetector
     {
         [Export]
