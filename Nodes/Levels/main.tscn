@@ -215,6 +215,8 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.018
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mmnqs"]
+radius = 0.35
+height = 1.8
 
 [node name="Main" type="Node3D"]
 
@@ -234,111 +236,111 @@ shadow_enabled = true
 [node name="Floor" type="Node" parent="Environment"]
 
 [node name="Node3D" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152148, 0, -0.305392)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076, 0, -0.152)
 
 [node name="Node3D7" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80017, 0, -0.305392)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, -0.152)
 
 [node name="Node3D8" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80017, 0, -6.45299)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, -3.226)
 
 [node name="Node3D9" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.80017, 0, 5.83676)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 2.919)
 
 [node name="Node3D5" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152148, 0, -6.3819)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076, 0, -3.191)
 
 [node name="Node3D6" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.07421, 0, -6.40284)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.537, 0, -3.201)
 
 [node name="Node3D3" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.10774, 0, -0.305392)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.554, 0, -0.152)
 
 [node name="Node3D4" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.10774, 0, 5.83894)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.554, 0, 2.92)
 
 [node name="Node3D2" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152148, 0, 5.86603)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076, 0, 2.933)
 
 [node name="Props" type="Node" parent="Environment"]
 
 [node name="Candles" type="Node" parent="Environment/Props"]
 
 [node name="Candle" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34507, 0.173521, 1.46642)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.172, 0.087, 0.733)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
 [node name="Candle7" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.92647, 2.83761, -4.66296)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.963, 0.991203, -2.331)
 
 [node name="Candle9" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65412, 0.209437, -8.12784)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.827, 0.105, -4.064)
 
 [node name="Candle10" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.727998, 0.209437, -8.12784)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.364, 0.105, -4.064)
 
 [node name="Candle11" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.94547, 0.209436, -4.11562)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.972, 0.105, -2.058)
 collision_layer = 4
 
 [node name="Candle12" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.78582, 0.209437, 0.172731)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.893, 0.105, 0.087)
 
 [node name="Candle8" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.06132, 2.92538, -6.03098)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.53, 0.990667, -3.015)
 
 [node name="Candle2" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.122412, 0.107726, 3.57616)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.061, 0.054, 1.788)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
 [node name="Candle3" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.938936, 0.227706, 6.05973)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47, 0.114, 3.03)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
 [node name="Candle4" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.67974, 0.173522, 2.909)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34, 0.087, 1.455)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
 [node name="Candle6" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.06371, 0.119582, 6.00648)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.032, 0.06, 3.003)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
 [node name="Table" parent="Environment/Props" instance=ExtResource("6_8lxur")]
-transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 5.10417, 0.132775, -4.21439)
+transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 2.552, 0.067, -2.107)
 
 [node name="SpiderWeb" parent="Environment/Props" instance=ExtResource("5_2pygc")]
-transform = Transform3D(-0.785643, 0.294034, -0.997926, 0.728402, -0.214916, -1.24447, -1.35185, -0.286682, -0.0905848, 5.76942, 1.14663, -0.39284)
+transform = Transform3D(-0.39307, 0.147176, -0.499046, 0.364432, -0.107574, -0.622336, -0.676353, -0.143496, -0.0452998, 3.25371, 0.434931, -0.977741)
 skeleton = NodePath("")
 
 [node name="SpiderWeb2" parent="Environment/Props" instance=ExtResource("5_2pygc")]
-transform = Transform3D(-1.33342, 0.216595, -1.22457, 2.16712, 0.07561, -1.11703, -0.530591, -0.235503, -1.48489, 6.09685, 5.42085, -7.44371)
+transform = Transform3D(-1.33342, 0.216595, -1.22457, 2.16712, 0.07561, -1.11703, -0.530591, -0.235503, -1.48489, 3.049, 2.711, -3.722)
 skeleton = NodePath("")
 
 [node name="Book" parent="Environment/Props" instance=ExtResource("7_yndja")]
-transform = Transform3D(4.2222e-08, 1, 1.13133e-08, 0.965926, -4.37114e-08, 0.258819, 0.258819, 0, -0.965926, 4.2829, 3.20502, -4.9195)
+transform = Transform3D(0.104011, 0.915698, -0.388175, 0.965926, -4.37114e-08, 0.258819, 0.237, -0.401868, -0.884496, 2.19123, 1.1091, -2.21673)
 script = ExtResource("8_4d54r")
 
 [node name="Bottle" parent="Environment/Props" instance=ExtResource("8_ntrqp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.99842, 2.8468, -3.10159)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.499, 1.03587, -1.551)
 
 [node name="Cauldron" parent="Environment/Props" instance=ExtResource("9_2842f")]
-transform = Transform3D(1.00125, 0, 0, 0, 1.00125, 0, 0, 0, 1.00125, -2.45848, 0.145159, 4.20749)
+transform = Transform3D(1.00125, 0, 0, 0, 1.00125, 0, 0, 0, 1.00125, -1.229, 0.073, 2.104)
 
 [node name="Chair" parent="Environment/Props" instance=ExtResource("9_cm0k1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0638, 0.148203, -4.40826)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.532, 0.074, -2.204)
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("CameraOriginNode")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34003, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25853, 1.17148, -2.33987)
 collision_layer = 2
 collision_mask = 3
 slide_on_ceiling = false

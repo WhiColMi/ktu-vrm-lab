@@ -16,7 +16,7 @@ dest_files=["res://.godot/imported/Bottle.obj-8e7877a447225309ab72c3a074140486.m
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
+scale_mesh=Vector3(0.5, 0.5, 0.5)
 offset_mesh=Vector3(0, 0, 0)
 optimize_mesh=true
 force_disable_mesh_compression=false

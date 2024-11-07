@@ -6,8 +6,11 @@
 [ext_resource type="Shader" uid="uid://bppyxuiun710x" path="res://Graphics/VFX/Common/BasicParticle.res" id="3_t42a4"]
 [ext_resource type="Script" path="res://Scripts/Interaction/Environment/Flammable.cs" id="6_bi0vb"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7v4ue"]
-points = PackedVector3Array(0.138933, 1.33235, 0.062901, -0.146368, 0.00989163, -0.0148756, -0.146368, 0.00989163, 0.0110406, -0.146368, 1.41018, -0.0148756, 0.112989, 0.00989163, -0.118624, 0.0351848, 0.00989163, 0.140733, -0.0166756, 1.43601, -0.144568, -0.0426197, 1.41018, 0.140733, -0.09448, 0.00989163, -0.118624, 0.112989, 1.41018, -0.118624, -0.120424, 0.139554, 0.114789, 0.138933, 0.00989163, 0.0369848, 0.0351848, 1.64351, 0.0110406, 0.112989, 1.41018, 0.114789, -0.120424, 1.38402, -0.09268, -0.120424, 1.41018, 0.0888451, 0.0351848, 0.00989163, -0.144568, 0.138933, 1.35835, -0.0667359, 0.112989, 0.113719, 0.114789, -0.0426197, 1.64351, -0.0148756, -0.0426197, 0.00989163, 0.140733, 0.0351848, 1.43601, 0.140733, -0.120424, -0.0161058, 0.062901, -0.146368, 1.22836, 0.0369848, -0.0426197, 0.191386, -0.144568, -0.09448, 1.41018, -0.118624, 0.138933, 0.00989163, -0.0408197, -0.146368, 0.0617241, -0.0408197, 0.0351848, 1.43601, -0.144568, 0.138933, 1.43601, 0.0369848, -0.0166756, 1.64351, 0.0369848, 0.061101, 0.0617241, 0.140733)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wxrtq"]
+points = PackedVector3Array(0.06945, 0.666143, 0.0314386, -0.0731833, 0.00491381, -0.00743096, -0.0731833, 0.00491381, 0.00551159, -0.0731833, 0.705053, -0.00743096, 0.0564795, 0.00491381, -0.0592989, 0.0175821, 0.00491381, 0.07035, -0.00833096, 0.71805, -0.0722833, -0.0213014, 0.705053, 0.07035, -0.0472284, 0.00491381, -0.0592989, 0.0564795, 0.705053, -0.0592989, -0.0601989, 0.069737, 0.0573795, 0.06945, 0.00491381, 0.0184821, 0.0175821, 0.821783, 0.00551159, 0.0564795, 0.705053, 0.0573795, -0.0601989, 0.692056, -0.0463284, -0.0601989, 0.705053, 0.044409, 0.0175821, 0.00491381, -0.0722833, 0.06945, 0.67914, -0.0333579, 0.0564795, 0.0568211, 0.0573795, -0.0213014, 0.821783, -0.00743096, -0.0213014, 0.00491381, 0.07035, 0.0175821, 0.71805, 0.07035, -0.0601989, -0.00808334, 0.0314386, -0.0731833, 0.614317, 0.0184821, -0.0213014, 0.09565, -0.0722833, 0.06945, 0.00491381, -0.0204014, -0.0731833, 0.0308268, -0.0204014, 0.0175821, 0.71805, -0.0722833, -0.0472284, 0.67914, -0.0592989, 0.06945, 0.71805, 0.0184821, -0.00833096, 0.821783, 0.0184821, 0.0305386, 0.0308268, 0.07035)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_y34l8"]
+radius = 0.2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kupkt"]
 render_priority = 0
@@ -59,8 +62,8 @@ angular_velocity_max = 70.0
 gravity = Vector3(0, 6, 0)
 damping_min = 0.8
 damping_max = 0.9
-scale_min = 0.15
-scale_max = 0.2
+scale_min = 0.08
+scale_max = 0.1
 scale_curve = SubResource("CurveTexture_rbgwd")
 color_ramp = SubResource("GradientTexture1D_n7kyq")
 alpha_curve = SubResource("CurveTexture_ovocs")
@@ -68,13 +71,8 @@ emission_curve = SubResource("CurveTexture_vxf2w")
 
 [sub_resource type="BoxMesh" id="BoxMesh_vkylo"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_y34l8"]
-radius = 0.4
-
 [node name="Candle" type="RigidBody3D"]
 collision_mask = 7
-center_of_mass_mode = 1
-center_of_mass = Vector3(0, 0.8, 0)
 script = ExtResource("1_ykuky")
 metadata/Fire = true
 metadata/FireDuration = -1.0
@@ -84,28 +82,29 @@ material_override = ExtResource("1_nymbm")
 mesh = ExtResource("2_pu2yy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("ConvexPolygonShape3D_7v4ue")
+shape = SubResource("ConvexPolygonShape3D_wxrtq")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.64142, 0)
-light_color = Color(1, 0.729412, 0.290196, 1)
-light_energy = 0.3
-shadow_enabled = true
+[node name="Flammable" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.803, 0)
+collision_mask = 5
+script = ExtResource("6_bi0vb")
+VfxNodePath = NodePath("GPUParticles3D")
+LightNodePath = NodePath("OmniLight3D")
+Duration = 5.0
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58885, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Flammable"]
+shape = SubResource("SphereShape3D_y34l8")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Flammable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01744, 0)
 material_override = SubResource("ShaderMaterial_kupkt")
 amount = 64
-lifetime = 0.35
+lifetime = 0.25
 process_material = SubResource("ParticleProcessMaterial_e0dx6")
 draw_pass_1 = SubResource("BoxMesh_vkylo")
 
-[node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60629, 0)
-script = ExtResource("6_bi0vb")
-VfxNodePath = NodePath("../GPUParticles3D")
-LightNodePath = NodePath("../OmniLight3D")
-Duration = 5.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("SphereShape3D_y34l8")
+[node name="OmniLight3D" type="OmniLight3D" parent="Flammable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03513, 0)
+light_color = Color(1, 0.729412, 0.290196, 1)
+light_energy = 0.3
+shadow_enabled = true

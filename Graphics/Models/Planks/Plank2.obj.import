@@ -16,7 +16,7 @@ dest_files=["res://.godot/imported/Plank2.obj-911e922a2b26077708d5508a3ec8e2cb.m
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
+scale_mesh=Vector3(0.5, 0.5, 0.5)
 offset_mesh=Vector3(0, 0, 0)
 optimize_mesh=true
 force_disable_mesh_compression=false

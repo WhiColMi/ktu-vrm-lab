@@ -3,8 +3,8 @@
 [ext_resource type="Material" uid="uid://di1mq7kj4x64p" path="res://Graphics/Models/Book/materials/book.tres" id="1_vgpsn"]
 [ext_resource type="ArrayMesh" uid="uid://dhqqmud80fmok" path="res://Graphics/Models/Book/Book.obj" id="2_udf5f"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_02jcy"]
-points = PackedVector3Array(-0.0842, -0.370441, -0.276843, 0.0672264, 0.36419, 0.294625, 0.095646, 0.396902, 0.285846, 0.0956278, -0.396902, 0.285846, 0.095646, 0.396902, -0.297042, -0.0842, 0.370441, 0.278791, 0.0956278, -0.396902, -0.297102, -0.0842, -0.370441, 0.278791, -0.0842, 0.370441, -0.276843, -0.0625161, -0.3672, 0.297005, -0.0625161, 0.3672, 0.297005, 0.0672264, -0.36419, 0.294625)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ympm5"]
+points = PackedVector3Array(-0.0421, -0.185211, -0.138402, 0.0335882, 0.182057, 0.147295, 0.0478, 0.1984, 0.142899, 0.0477909, -0.1984, 0.14287, 0.0478, 0.1984, -0.1485, -0.0421, 0.185211, 0.1394, 0.0477909, -0.1984, -0.1485, -0.0421, -0.185211, 0.1394, -0.0421, 0.185211, -0.138402, -0.0312549, -0.183564, 0.148485, -0.0312549, 0.183564, 0.148485, 0.0335882, -0.182057, 0.147295)
 
 [node name="Book" type="RigidBody3D"]
 collision_mask = 7
@@ -14,5 +14,5 @@ material_override = ExtResource("1_vgpsn")
 mesh = ExtResource("2_udf5f")
 skeleton = NodePath("")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
-shape = SubResource("ConvexPolygonShape3D_02jcy")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_ympm5")
