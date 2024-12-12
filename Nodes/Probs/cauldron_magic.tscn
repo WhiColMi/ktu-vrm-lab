@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=3 uid="uid://6d5vyynwo1rp"]
+
+[ext_resource type="PackedScene" uid="uid://d3fgy483alyqy" path="res://Nodes/Probs/cauldron.tscn" id="1_k6dm6"]
+[ext_resource type="Script" path="res://Scripts/Cauldron.cs" id="2_aa48m"]
+[ext_resource type="ArrayMesh" uid="uid://bfgrlbtm5df0w" path="res://Graphics/Models/Cauldron/Cauldron_Filling.obj" id="3_0wjmq"]
+[ext_resource type="Material" uid="uid://5kcwo48fjk6v" path="res://Graphics/Models/Cauldron/materials/cauldron_filling.tres" id="3_bkytt"]
+[ext_resource type="Script" path="res://Scripts/CauldronContent.cs" id="4_5cx58"]
+[ext_resource type="AudioStream" uid="uid://b5i1butmuudne" path="res://sounds/brewing.mp3" id="4_nhnmg"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gvfa0"]
+radius = 0.6
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_vxcby"]
+size = Vector2(0.615, 0.595)
+
+[node name="MagicCauldron" instance=ExtResource("1_k6dm6")]
+script = ExtResource("2_aa48m")
+CauldronContentPath = NodePath("Area3D")
+
+[node name="CauldronFillMesh" type="MeshInstance3D" parent="." index="1"]
+material_override = ExtResource("3_bkytt")
+mesh = ExtResource("3_0wjmq")
+
+[node name="Area3D" type="Area3D" parent="." index="3"]
+collision_mask = 5
+script = ExtResource("4_5cx58")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.368717, 0)
+shape = SubResource("SphereShape3D_gvfa0")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Area3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.930449, 0)
+visible = false
+mesh = SubResource("PlaneMesh_vxcby")
+skeleton = NodePath("../..")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Area3D" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04869, 0)
+light_color = Color(0.411542, 0.711054, 0.750716, 1)
+
+[node name="BrewingSoundPlayer" type="AudioStreamPlayer3D" parent="." index="4"]
+stream = ExtResource("4_nhnmg")
+volume_db = -25.328

@@ -3,6 +3,9 @@ using Godot;
 public partial class CharacterController : CharacterBody3D
 {
 	[Export]
+	public NodePath UIPath;
+
+	[Export]
 	public float Speed = 5.0f;
 	[Export]
 	public float JumpForce = 10.0f;
@@ -16,11 +19,19 @@ public partial class CharacterController : CharacterBody3D
 	Vector3 _velocity = Vector3.Zero;
 	Vector2 _mouseDelta = Vector2.Zero;
 	float yaw = 0;
+	AudioStreamPlayer3D _fallSoundPlayer;
+	AudioStreamPlayer3D _jumpSoundPlayer;
+
+	bool _isOnFloor = false;
 
 
 	public override void _Ready()
 	{
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+		GetNode<Control>(UIPath).Hide();
+
+		_fallSoundPlayer = GetNode<AudioStreamPlayer3D>("FallSoundPlayer");
+		_jumpSoundPlayer = GetNode<AudioStreamPlayer3D>("JumpSoundPlayer");
 	}
 
 	public override void _Input(InputEvent @event)
@@ -59,10 +70,25 @@ public partial class CharacterController : CharacterBody3D
 		if (IsOnFloor() && Input.IsActionJustPressed("jump"))
 		{
 			_velocity.Y = JumpForce;
+			_jumpSoundPlayer.Play();
 		}
 		else if (!IsOnFloor())
 		{
 			_velocity.Y += (float)(-9.8 * delta); // Apply gravity
+		}
+
+		if (Input.IsActionJustPressed("close"))
+		{
+			GetNode<Control>(UIPath).Hide();
+		}
+
+		if (_isOnFloor != IsOnFloor())
+		{
+			_isOnFloor = IsOnFloor();
+			if (_isOnFloor)
+			{
+				_fallSoundPlayer.Play();
+			}
 		}
 
 		Velocity = _velocity;

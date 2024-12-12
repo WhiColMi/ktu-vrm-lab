@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bfgrlbtm5df0w"
+path="res://.godot/imported/Cauldron_Filling.obj-93cb23588a70c6ead27d2eb05bb87b57.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cauldron_Filling.obj-93cb23588a70c6ead27d2eb05bb87b57.mesh"]
+
+source_file="res://Graphics/Models/Cauldron/Cauldron_Filling.obj"
+dest_files=["res://.godot/imported/Cauldron_Filling.obj-93cb23588a70c6ead27d2eb05bb87b57.mesh", "res://.godot/imported/Cauldron_Filling.obj-93cb23588a70c6ead27d2eb05bb87b57.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(0.75, 0.75, 0.75)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

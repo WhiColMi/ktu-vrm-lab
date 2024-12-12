@@ -1,10 +1,14 @@
-[gd_scene load_steps=19 format=3 uid="uid://ds8i0tw3it73m"]
+[gd_scene load_steps=23 format=3 uid="uid://ds8i0tw3it73m"]
 
 [ext_resource type="Material" uid="uid://cmikubeq33hv0" path="res://Graphics/Models/Candle/materials/Candle.tres" id="1_nymbm"]
 [ext_resource type="Script" path="res://Scripts/Interaction/Holdable.cs" id="1_ykuky"]
 [ext_resource type="ArrayMesh" uid="uid://sakg3hwyu4mb" path="res://Graphics/Models/Candle/Candle.obj" id="2_pu2yy"]
 [ext_resource type="Shader" uid="uid://bppyxuiun710x" path="res://Graphics/VFX/Common/BasicParticle.res" id="3_t42a4"]
+[ext_resource type="AudioStream" uid="uid://dv4ql31qyl183" path="res://sounds/fire.mp3" id="6_6ieoi"]
 [ext_resource type="Script" path="res://Scripts/Interaction/Environment/Flammable.cs" id="6_bi0vb"]
+[ext_resource type="AudioStream" uid="uid://cfxr45y12nk3" path="res://sounds/pickup_item.mp3" id="6_orqtv"]
+[ext_resource type="AudioStream" uid="uid://bx0bql2f74svt" path="res://sounds/light_candle.wav" id="7_1nfd4"]
+[ext_resource type="AudioStream" uid="uid://yee711ipot4n" path="res://sounds/item_drop.mp3" id="7_dwwlm"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wxrtq"]
 points = PackedVector3Array(0.06945, 0.666143, 0.0314386, -0.0731833, 0.00491381, -0.00743096, -0.0731833, 0.00491381, 0.00551159, -0.0731833, 0.705053, -0.00743096, 0.0564795, 0.00491381, -0.0592989, 0.0175821, 0.00491381, 0.07035, -0.00833096, 0.71805, -0.0722833, -0.0213014, 0.705053, 0.07035, -0.0472284, 0.00491381, -0.0592989, 0.0564795, 0.705053, -0.0592989, -0.0601989, 0.069737, 0.0573795, 0.06945, 0.00491381, 0.0184821, 0.0175821, 0.821783, 0.00551159, 0.0564795, 0.705053, 0.0573795, -0.0601989, 0.692056, -0.0463284, -0.0601989, 0.705053, 0.044409, 0.0175821, 0.00491381, -0.0722833, 0.06945, 0.67914, -0.0333579, 0.0564795, 0.0568211, 0.0573795, -0.0213014, 0.821783, -0.00743096, -0.0213014, 0.00491381, 0.07035, 0.0175821, 0.71805, 0.07035, -0.0601989, -0.00808334, 0.0314386, -0.0731833, 0.614317, 0.0184821, -0.0213014, 0.09565, -0.0722833, 0.06945, 0.00491381, -0.0204014, -0.0731833, 0.0308268, -0.0204014, 0.0175821, 0.71805, -0.0722833, -0.0472284, 0.67914, -0.0592989, 0.06945, 0.71805, 0.0184821, -0.00833096, 0.821783, 0.0184821, 0.0305386, 0.0308268, 0.07035)
@@ -73,6 +77,8 @@ emission_curve = SubResource("CurveTexture_vxf2w")
 
 [node name="Candle" type="RigidBody3D"]
 collision_mask = 7
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_ykuky")
 metadata/Fire = true
 metadata/FireDuration = -1.0
@@ -108,3 +114,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03513, 0)
 light_color = Color(1, 0.729412, 0.290196, 1)
 light_energy = 0.3
 shadow_enabled = true
+
+[node name="BurnSoundPlayer" type="AudioStreamPlayer3D" parent="Flammable"]
+stream = ExtResource("6_6ieoi")
+volume_db = -25.12
+
+[node name="LitSoundPlayer" type="AudioStreamPlayer3D" parent="Flammable"]
+stream = ExtResource("7_1nfd4")
+volume_db = -9.135
+
+[node name="PickupSoundPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_orqtv")
+
+[node name="DropSoundPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("7_dwwlm")

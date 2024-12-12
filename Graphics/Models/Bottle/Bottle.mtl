@@ -1,7 +1,7 @@
 # Blender 4.0.2 MTL File: 'Bottle.blend'
 # www.blender.org
 
-newmtl Material
+newmtl Bottle_mat
 Ns 2.053652
 Ka 1.000000 1.000000 1.000000
 Kd 0.835968 0.687279 0.646287

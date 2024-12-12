@@ -5,11 +5,11 @@ namespace Interactions.Character
 {
     public partial class UseManager : Node
     {
-        Usable inUseWith;
+        IUsable inUseWith;
 
         public bool UseStart(Node node)
         {
-            if(node is Usable usable)
+            if(node is IUsable usable)
             {
                 usable.OnStartUse(this);
                 inUseWith = usable;

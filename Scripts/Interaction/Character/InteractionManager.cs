@@ -101,10 +101,6 @@ namespace Interactions.Character
                     return collider;
                 }
             }
-            else
-            {
-                GD.Print("No interaction target found");
-            }
 
             return null;
         }

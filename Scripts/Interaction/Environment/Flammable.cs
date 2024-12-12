@@ -12,13 +12,25 @@ namespace Interactions.Environment
         [Export]
         public float Duration = 2.0f; // Duration in seconds
 
+        [Signal]
+        public delegate void FireActivatedEventHandler();
+
+        [Signal]
+        public delegate void FireDeactivatedEventHandler();
+
         Node _vfxNode;
         Light3D _lightNode;
         Timer _timer;
 
+        AudioStreamPlayer3D BurnSoundPlayer;
+        AudioStreamPlayer3D LitSoundPlayer;
+
         public override void _Ready()
         {
             base._Ready();
+
+            BurnSoundPlayer = GetNode<AudioStreamPlayer3D>("BurnSoundPlayer");
+
             _vfxNode = GetNode(VfxNodePath);
             _lightNode = GetNode(LightNodePath) as Light3D;
             _timer = new Timer();
@@ -26,6 +38,8 @@ namespace Interactions.Environment
             _timer.Connect("timeout", new Callable(this, nameof(OnTimerTimeout)));
 
             RetrieveMeta();
+
+            LitSoundPlayer = GetNode<AudioStreamPlayer3D>("LitSoundPlayer");
         }
 
         void RetrieveMeta()
@@ -72,29 +86,33 @@ namespace Interactions.Environment
 
         public void Activate()
         {
-            if (Duration == 0)
+            if (Duration == 0 && IsActivated())
             {
                 return;
             }
 
             if (_vfxNode is GpuParticles3D gpuParticles3D)
             {
-                gpuParticles3D.Emitting = true;
                 _Activate();
+                gpuParticles3D.Emitting = true;
             }
             else if (_vfxNode is CpuParticles3D cpuParticles3D)
             {
-                cpuParticles3D.Emitting = true;
                 _Activate();
+                cpuParticles3D.Emitting = true;
             }
             else
             {
                 GD.PrintErr("VFX node is not a particle system.");
             }
+
+            EmitSignal(nameof(FireActivated));
         }
 
         public void Deactivate()
         {
+            BurnSoundPlayer.Stop();
+
             if (_vfxNode is GpuParticles3D gpuParticles3D)
             {
                 gpuParticles3D.Emitting = false;
@@ -105,10 +123,18 @@ namespace Interactions.Environment
             }
             _lightNode?.Hide();
             _timer.Stop();
+
+            EmitSignal(nameof(FireDeactivated));
         }
 
         void _Activate()
         {
+            BurnSoundPlayer.Play();
+            if (!IsActivated())
+            {
+                LitSoundPlayer?.Play();
+            }
+
             _lightNode?.Show();
             if (Duration < 0)
             {

@@ -1,20 +1,27 @@
-[gd_scene load_steps=21 format=3 uid="uid://1ss6vrwe7fqk"]
+[gd_scene load_steps=34 format=3 uid="uid://1ss6vrwe7fqk"]
 
 [ext_resource type="PackedScene" uid="uid://v1b207tjtxd7" path="res://Nodes/Probs/plank_floor.tscn" id="1_dp2i7"]
 [ext_resource type="Texture2D" uid="uid://dtjiixionvm3u" path="res://Graphics/Textures/noiseTexture.png" id="1_ndwl0"]
 [ext_resource type="Texture2D" uid="uid://cpftchpptesj7" path="res://Graphics/Textures/tilingvoronoi.png" id="2_s7x6b"]
 [ext_resource type="PackedScene" uid="uid://ds8i0tw3it73m" path="res://Nodes/Probs/candle.tscn" id="4_04vmm"]
 [ext_resource type="PackedScene" uid="uid://biwcjtqln5q08" path="res://Nodes/Probs/spider_web.tscn" id="5_2pygc"]
+[ext_resource type="AudioStream" uid="uid://dfnbs2hkatxtp" path="res://sounds/destroy_box.mp3" id="5_h08e4"]
 [ext_resource type="PackedScene" uid="uid://hbta6j8yvriw" path="res://Nodes/Probs/table.tscn" id="6_8lxur"]
 [ext_resource type="PackedScene" uid="uid://do2tpj83sb5b6" path="res://Nodes/Probs/book.tscn" id="7_yndja"]
-[ext_resource type="Script" path="res://Scripts/Interaction/Holdable.cs" id="8_4d54r"]
+[ext_resource type="Script" path="res://Scripts/Book.cs" id="8_m7lq4"]
 [ext_resource type="PackedScene" uid="uid://cd56jcy5y1qy" path="res://Nodes/Probs/bottle.tscn" id="8_ntrqp"]
-[ext_resource type="PackedScene" uid="uid://d3fgy483alyqy" path="res://Nodes/Probs/cauldron.tscn" id="9_2842f"]
 [ext_resource type="PackedScene" uid="uid://bt7qpwmvk5837" path="res://Nodes/Probs/chair.tscn" id="9_cm0k1"]
 [ext_resource type="Script" path="res://Scripts/CharacterController/CharacterController.cs" id="11_axi2o"]
+[ext_resource type="PackedScene" uid="uid://6d5vyynwo1rp" path="res://Nodes/Probs/cauldron_magic.tscn" id="12_jgtl6"]
 [ext_resource type="Script" path="res://Scripts/Interaction/Character/UseManager.cs" id="12_s2ghm"]
+[ext_resource type="Script" path="res://Scripts/Blocker.cs" id="12_xenss"]
 [ext_resource type="Script" path="res://Scripts/Interaction/Character/InteractionManager.cs" id="13_v02xf"]
+[ext_resource type="AudioStream" uid="uid://c2bvffk3sjyv0" path="res://sounds/jump.mp3" id="14_dskln"]
 [ext_resource type="Script" path="res://Scripts/Interaction/Character/GraspManager.cs" id="14_qs6i1"]
+[ext_resource type="PackedScene" uid="uid://p0kv8q5qorjs" path="res://UI/GameHUD.tscn" id="17_1dbkw"]
+[ext_resource type="PackedScene" uid="uid://dhgq8hcpr1x1x" path="res://UI/BookMessage.tscn" id="18_jnbbw"]
+[ext_resource type="AudioStream" uid="uid://dn5rvuqfgpkek" path="res://sounds/ambiet.mp3" id="19_e0mjs"]
+[ext_resource type="AudioStream" uid="uid://0r2210ss150l" path="res://sounds/player_fall.mp3" id="20_5kkq3"]
 
 [sub_resource type="Shader" id="Shader_2gbhu"]
 code = "
@@ -214,6 +221,22 @@ glow_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.018
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_1dgvt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_l668k"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ukfsn"]
+size = Vector3(0.3, 7, 9.32)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3kt81"]
+size = Vector3(0.3, 7, 9.32)
+
+[sub_resource type="BoxMesh" id="BoxMesh_n8qjm"]
+size = Vector3(7.6, 7, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lu7fr"]
+size = Vector3(7.6, 7, 0.3)
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mmnqs"]
 radius = 0.35
 height = 1.8
@@ -262,82 +285,167 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.554, 0, 2.92)
 [node name="Node3D2" parent="Environment/Floor" instance=ExtResource("1_dp2i7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076, 0, 2.933)
 
-[node name="Props" type="Node" parent="Environment"]
+[node name="Ceiling" type="Node" parent="Environment"]
 
-[node name="Candles" type="Node" parent="Environment/Props"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment/Ceiling"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.71421, 6.12498, 2.26668)
+script = ExtResource("12_xenss")
 
-[node name="Candle" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Ceiling/StaticBody3D"]
+shape = SubResource("BoxShape3D_1dgvt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Ceiling/StaticBody3D"]
+mesh = SubResource("BoxMesh_l668k")
+
+[node name="UseSoundPlayer" type="AudioStreamPlayer3D" parent="Environment/Ceiling/StaticBody3D"]
+stream = ExtResource("5_h08e4")
+
+[node name="Node3D7" parent="Environment/Ceiling" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 5.51174, -0.152)
+
+[node name="Node3D8" parent="Environment/Ceiling" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 5.51174, -3.226)
+
+[node name="Node3D9" parent="Environment/Ceiling" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 5.51174, 2.919)
+
+[node name="Node3D5" parent="Environment/Ceiling" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076, 5.51174, -3.191)
+
+[node name="Node3D6" parent="Environment/Ceiling" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.537, 5.51174, -3.201)
+
+[node name="Node3D3" parent="Environment/Ceiling" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.554, 5.51174, -0.152)
+
+[node name="Node3D4" parent="Environment/Ceiling" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.554, 5.51174, 2.92)
+
+[node name="Node3D2" parent="Environment/Ceiling" instance=ExtResource("1_dp2i7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076, 5.51174, 2.933)
+
+[node name="Candle13" parent="Environment/Ceiling" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.78298, 5.74493, 0.159304)
+
+[node name="Candle14" parent="Environment/Ceiling" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00655866, 5.74493, 2.26267)
+
+[node name="Walls" type="Node" parent="Environment"]
+
+[node name="Wall5" type="StaticBody3D" parent="Environment/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.918, 2.823, -0.125)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Walls/Wall5"]
+mesh = SubResource("BoxMesh_ukfsn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Walls/Wall5"]
+shape = SubResource("BoxShape3D_3kt81")
+
+[node name="Wall3" type="StaticBody3D" parent="Environment/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.669, 2.823, -0.129)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Walls/Wall3"]
+mesh = SubResource("BoxMesh_ukfsn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Walls/Wall3"]
+shape = SubResource("BoxShape3D_3kt81")
+
+[node name="Wall2" type="StaticBody3D" parent="Environment/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 2.823, 4.383)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Walls/Wall2"]
+mesh = SubResource("BoxMesh_n8qjm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Walls/Wall2"]
+shape = SubResource("BoxShape3D_lu7fr")
+
+[node name="Wall" type="StaticBody3D" parent="Environment/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0544477, 2.82302, -4.64831)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Walls/Wall"]
+mesh = SubResource("BoxMesh_n8qjm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Walls/Wall"]
+shape = SubResource("BoxShape3D_lu7fr")
+
+[node name="Props" type="Node" parent="."]
+
+[node name="Candles" type="Node" parent="Props"]
+
+[node name="Candle7" parent="Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.963, 0.991203, -2.331)
+
+[node name="Candle9" parent="Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.827, 0.105, -4.064)
+
+[node name="Candle10" parent="Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.364, 0.105, -4.064)
+
+[node name="Candle11" parent="Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.972, 0.105, -2.058)
+collision_layer = 4
+
+[node name="Candle12" parent="Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.893, 0.105, 0.087)
+
+[node name="Candle8" parent="Props/Candles" instance=ExtResource("4_04vmm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.53, 0.990667, -3.015)
+
+[node name="Cauldron_Candle" parent="Props/Candles" instance=ExtResource("4_04vmm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.172, 0.087, 0.733)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
-[node name="Candle7" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.963, 0.991203, -2.331)
-
-[node name="Candle9" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.827, 0.105, -4.064)
-
-[node name="Candle10" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.364, 0.105, -4.064)
-
-[node name="Candle11" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.972, 0.105, -2.058)
-collision_layer = 4
-
-[node name="Candle12" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.893, 0.105, 0.087)
-
-[node name="Candle8" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.53, 0.990667, -3.015)
-
-[node name="Candle2" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+[node name="Cauldron_Candle2" parent="Props/Candles" instance=ExtResource("4_04vmm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.061, 0.054, 1.788)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
-[node name="Candle3" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+[node name="Cauldron_Candle3" parent="Props/Candles" instance=ExtResource("4_04vmm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47, 0.114, 3.03)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
-[node name="Candle4" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+[node name="Cauldron_Candle4" parent="Props/Candles" instance=ExtResource("4_04vmm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34, 0.087, 1.455)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
-[node name="Candle6" parent="Environment/Props/Candles" instance=ExtResource("4_04vmm")]
+[node name="Cauldron_Candle6" parent="Props/Candles" instance=ExtResource("4_04vmm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.032, 0.06, 3.003)
 freeze = true
 freeze_mode = 1
 metadata/Fire = false
 
-[node name="Table" parent="Environment/Props" instance=ExtResource("6_8lxur")]
+[node name="Table" parent="Props" instance=ExtResource("6_8lxur")]
 transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 2.552, 0.067, -2.107)
 
-[node name="SpiderWeb" parent="Environment/Props" instance=ExtResource("5_2pygc")]
+[node name="SpiderWeb" parent="Props" instance=ExtResource("5_2pygc")]
 transform = Transform3D(-0.39307, 0.147176, -0.499046, 0.364432, -0.107574, -0.622336, -0.676353, -0.143496, -0.0452998, 3.25371, 0.434931, -0.977741)
 skeleton = NodePath("")
 
-[node name="SpiderWeb2" parent="Environment/Props" instance=ExtResource("5_2pygc")]
+[node name="SpiderWeb2" parent="Props" instance=ExtResource("5_2pygc")]
 transform = Transform3D(-1.33342, 0.216595, -1.22457, 2.16712, 0.07561, -1.11703, -0.530591, -0.235503, -1.48489, 3.049, 2.711, -3.722)
 skeleton = NodePath("")
 
-[node name="Book" parent="Environment/Props" instance=ExtResource("7_yndja")]
+[node name="Book" parent="Props" instance=ExtResource("7_yndja")]
 transform = Transform3D(0.104011, 0.915698, -0.388175, 0.965926, -4.37114e-08, 0.258819, 0.237, -0.401868, -0.884496, 2.19123, 1.1091, -2.21673)
-script = ExtResource("8_4d54r")
+script = ExtResource("8_m7lq4")
+UIPath = NodePath("../../CharacterBody3D/Camera3D/Control")
 
-[node name="Bottle" parent="Environment/Props" instance=ExtResource("8_ntrqp")]
+[node name="Bottle" parent="Props" instance=ExtResource("8_ntrqp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.499, 1.03587, -1.551)
 
-[node name="Cauldron" parent="Environment/Props" instance=ExtResource("9_2842f")]
-transform = Transform3D(1.00125, 0, 0, 0, 1.00125, 0, 0, 0, 1.00125, -1.229, 0.073, 2.104)
-
-[node name="Chair" parent="Environment/Props" instance=ExtResource("9_cm0k1")]
+[node name="Chair" parent="Props" instance=ExtResource("9_cm0k1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.532, 0.074, -2.204)
+
+[node name="Cauldron2" parent="Props" instance=ExtResource("12_jgtl6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.229, 0.073, 2.104)
+flammables = Array[NodePath]([NodePath("../Candles/Cauldron_Candle"), NodePath("../Candles/Cauldron_Candle2"), NodePath("../Candles/Cauldron_Candle3"), NodePath("../Candles/Cauldron_Candle4"), NodePath("../Candles/Cauldron_Candle6")])
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("CameraOriginNode")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25853, 1.17148, -2.33987)
@@ -345,8 +453,14 @@ collision_layer = 2
 collision_mask = 3
 slide_on_ceiling = false
 script = ExtResource("11_axi2o")
+UIPath = NodePath("Camera3D/Control")
 JumpForce = 5.0
 CameraOriginNode = NodePath("Camera3D")
+
+[node name="Player_jump" type="AudioStreamPlayer3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.029, 0.106244, 0.00999999)
+stream = ExtResource("14_dskln")
+volume_db = -3.089
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 shape = SubResource("CapsuleShape3D_mmnqs")
@@ -367,3 +481,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.475, -0.275, -1)
 
 [node name="Use" type="Node" parent="CharacterBody3D/Camera3D"]
 script = ExtResource("12_s2ghm")
+
+[node name="GameHUD" parent="CharacterBody3D/Camera3D" instance=ExtResource("17_1dbkw")]
+
+[node name="Control" parent="CharacterBody3D/Camera3D" instance=ExtResource("18_jnbbw")]
+
+[node name="FallSoundPlayer" type="AudioStreamPlayer3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.015, 0)
+stream = ExtResource("20_5kkq3")
+volume_db = 80.0
+max_db = 6.0
+
+[node name="JumpSoundPlayer" type="AudioStreamPlayer3D" parent="CharacterBody3D"]
+stream = ExtResource("14_dskln")
+volume_db = -4.942
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Ambient" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("19_e0mjs")
+volume_db = -30.22
+autoplay = true

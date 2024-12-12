@@ -1,21 +1,46 @@
-[gd_scene load_steps=5 format=3 uid="uid://cd56jcy5y1qy"]
+[gd_scene load_steps=10 format=3 uid="uid://cd56jcy5y1qy"]
 
 [ext_resource type="ArrayMesh" uid="uid://c3spknmioi87g" path="res://Graphics/Models/Bottle/Bottle.obj" id="1_2tcx1"]
 [ext_resource type="Material" uid="uid://vpwrwtqia5cj" path="res://Graphics/Models/Bottle/materials/bottle.tres" id="1_hngeb"]
-[ext_resource type="Script" path="res://Scripts/Interaction/Holdable.cs" id="1_yismy"]
+[ext_resource type="Script" path="res://Scripts/Bottle.cs" id="1_je5k1"]
+[ext_resource type="AudioStream" uid="uid://cfxr45y12nk3" path="res://sounds/pickup_item.mp3" id="4_a1c5b"]
+[ext_resource type="AudioStream" uid="uid://yee711ipot4n" path="res://sounds/item_drop.mp3" id="5_xiu5m"]
+[ext_resource type="AudioStream" uid="uid://hqgjed46y4fv" path="res://sounds/water_fill.mp3" id="6_owgk2"]
+[ext_resource type="AudioStream" uid="uid://bggi4318krpry" path="res://sounds/drink.mp3" id="7_rw77e"]
+[ext_resource type="ArrayMesh" uid="uid://buqhtf3nbk30q" path="res://Graphics/Models/Bottle/Bottle_Fill.obj" id="8_oxh15"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dqiod"]
-points = PackedVector3Array(0, 0.138973, 0.394975, -0.342059, 0.138973, 0.197488, 0, -0.065934, 0.195555, 0.342059, 0.138973, 0.197488, 0, 0.438311, 0.368376, -0.31909, 0.438311, 0.184188, -0.342059, 0.138973, -0.197488, -0.169422, -0.065934, 0.0977386, 0.169355, -0.065934, 0.0977386, 0.342059, 0.138973, -0.197488, 0.319023, 0.438311, 0.184188, 0, 1.19511, 0.185657, -0.31909, 0.438311, -0.184265, -0.160851, 1.19511, 0.0927898, 0, 0.138973, -0.394976, -0.169422, -0.065934, -0.097816, 0.169355, -0.065934, -0.097816, 0, -0.065934, -0.195632, 0.319023, 0.438311, -0.184265, 0.160784, 1.19511, 0.0927898, 0, 0.438311, -0.368453, -0.160851, 1.19511, -0.0928672, 0, 1.19511, -0.185734, 0.160784, 1.19511, -0.0928672)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tcjfd"]
+points = PackedVector3Array(-0.00557581, -0.0207959, -0.106452, 0.00380708, 0.188807, 0.184701, -0.00548989, 0.189315, 0.183685, 0.00413434, 0.602605, -0.10241, 0.165054, 0.0642932, -0.0970724, -0.170202, 0.0694308, -0.0990937, 0.0141478, 0.602605, 0.097781, -0.0858838, 0.602605, 0.0577272, -0.165706, 0.0750822, 0.101265, 0.164879, 0.0740149, 0.101836, 0.0131564, 0.0767022, -0.189261, 0.0842419, 0.602605, 0.0577272, 0.0133477, -0.0209035, 0.10186, -0.0759046, 0.602605, -0.0623557, 0.161647, 0.170969, -0.0951266, -0.091402, -0.0228582, 0.0548879, -0.0056024, 0.0632498, 0.188184, 0.0742284, 0.602605, -0.0623557, 0.0899705, -0.023572, 0.0550218, -0.0146134, 0.20886, -0.176676, 0.163292, 0.169842, 0.0914374, -0.163918, 0.15188, -0.095503, -0.164721, 0.151238, 0.091333, 0.0129193, 0.217999, -0.176847, 0.0889376, -0.0200931, -0.0589982, -0.0903704, -0.0193819, -0.0588649, 0.132344, 0.218022, 0.107885, -0.152439, 0.190414, 0.0987263, -0.0158583, 0.602605, 0.097781, -0.0147861, 0.0778531, -0.188215, -0.124626, 0.218128, -0.112332, 0.0132658, 0.0656524, 0.186094)
 
 [node name="Bottle" type="RigidBody3D"]
 collision_mask = 7
-script = ExtResource("1_yismy")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_je5k1")
+LightPath = NodePath("OmniLight3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 material_override = ExtResource("1_hngeb")
 mesh = ExtResource("1_2tcx1")
 
+[node name="BottleFillMesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("8_oxh15")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-shape = SubResource("ConvexPolygonShape3D_dqiod")
+shape = SubResource("ConvexPolygonShape3D_tcjfd")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.162905, 0)
+light_color = Color(0.528849, 0.810096, 0.847657, 1)
+
+[node name="PickupSoundPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_a1c5b")
+
+[node name="DropSoundPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_xiu5m")
+
+[node name="FillSoundPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_owgk2")
+
+[node name="EmptySoundPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("7_rw77e")

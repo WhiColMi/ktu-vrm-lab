@@ -31,6 +31,8 @@ namespace Interactions.Character
 
             Holding = holdable;
             UpdateJointAttachment();
+
+            holdable.OnPickUp();
         }
 
         public override void Detach()
@@ -46,6 +48,7 @@ namespace Interactions.Character
             UpdateJointAttachment();
 
             _holding.Drop();
+            _holding.OnDrop();
 
             _holding.Mass = mass;
             _holding.GravityScale = gravityScale;

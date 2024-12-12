@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://buqhtf3nbk30q"
+path="res://.godot/imported/Bottle_Fill.obj-0741236b07798ff32fb130b9ed71eb01.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Bottle_Fill.obj-0741236b07798ff32fb130b9ed71eb01.mesh"]
+
+source_file="res://Graphics/Models/Bottle/Bottle_Fill.obj"
+dest_files=["res://.godot/imported/Bottle_Fill.obj-0741236b07798ff32fb130b9ed71eb01.mesh", "res://.godot/imported/Bottle_Fill.obj-0741236b07798ff32fb130b9ed71eb01.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(0.25, 0.25, 0.25)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
